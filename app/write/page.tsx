@@ -1,29 +1,25 @@
-// app/write/page.tsx
-"use client"; // Next.js에서 사용자가 버튼을 누르거나 글을 입력하는 페이지에는 항상 맨 위에 이 줄을 써야 합니다.
+"use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // 페이지 이동을 도와주는 도구입니다.
-import { supabase } from "../../lib/supabase"; // 2단계에서 만든 DB 연결 통로를 불러옵니다.
+import { useRouter } from "next/navigation";
+import { supabase } from "../../lib/supabase";
+import Link from "next/link";
 
 export default function WritePage() {
   const router = useRouter();
   
-  // 사용자가 입력할 제목, 작성자, 내용을 임시로 저장하는 '빈 상자'들을 만듭니다.
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
 
-  // '등록' 버튼을 눌렀을 때 실행되는 마법의 주문(함수)입니다.
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // 버튼을 눌렀을 때 화면이 껌뻑이며 새로고침 되는 것을 막아줍니다.
+    e.preventDefault();
 
-    // 빈칸이 있는지 확인합니다.
     if (!title || !author || !content) {
       alert("모든 칸을 채워주세요!");
       return;
     }
 
-    // ★ 가장 중요한 부분: Supabase의 'posts' 테이블에 우리가 입력한 값들을 넣으라고 명령합니다.
     const { error } = await supabase
       .from("posts")
       .insert([{ title: title, author: author, content: content }]);
@@ -32,51 +28,61 @@ export default function WritePage() {
       console.error("에러 발생:", error);
       alert("글 등록에 실패했습니다.");
     } else {
-      alert("글이 성공적으로 등록되었습니다!");
-      router.push("/list"); // 등록 성공 시 자동으로 리스트 페이지로 이동시킵니다.
+      router.push("/list");
     }
   };
 
   return (
-    <main style={{ padding: "20px" }}>
-      <h1>새로운 팀원 구하기</h1>
-      
-      {/* 폼(form) 태그 안에서 '제출(submit)'이 일어나면 위에 만든 handleSubmit 함수가 실행됩니다. */}
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px", maxWidth: "400px" }}>
+    <main style={{ minHeight: "100vh", backgroundColor: "#f0f4f8", padding: "40px 20px", display: "flex", justifyContent: "center" }}>
+      <div style={{ width: "100%", maxWidth: "600px" }}>
         
-        <div>
-          <label>글 제목</label><br />
-          <input 
-            type="text" 
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)} // 키보드를 칠 때마다 빈 상자(title)에 글자를 채웁니다.
-            style={{ width: "100%", padding: "8px" }} 
-          />
-        </div>
+        <Link href="/list" style={{ textDecoration: "none", color: "#2563eb", fontSize: "14px", fontWeight: "bold", display: "inline-block", marginBottom: "20px" }}>
+          ← 목록으로 돌아가기
+        </Link>
 
-        <div>
-          <label>작성자 이름</label><br />
-          <input 
-            type="text" 
-            value={author} 
-            onChange={(e) => setAuthor(e.target.value)} 
-            style={{ width: "100%", padding: "8px" }} 
-          />
-        </div>
+        <div style={{ backgroundColor: "white", padding: "40px", borderRadius: "16px", boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
+          <h1 style={{ color: "#1a202c", fontSize: "24px", margin: "0 0 30px 0", fontWeight: "800" }}>새로운 팀원 구하기</h1>
+          
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", color: "#4a5568", fontWeight: "bold", fontSize: "14px" }}>글 제목</label>
+              <input 
+                type="text" 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                placeholder="어떤 팀원을 찾으시나요?"
+                style={{ width: "100%", padding: "14px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "15px", boxSizing: "border-box" }} 
+              />
+            </div>
 
-        <div>
-          <label>구인 내용</label><br />
-          <textarea 
-            value={content} 
-            onChange={(e) => setContent(e.target.value)} 
-            style={{ width: "100%", padding: "8px", height: "100px" }} 
-          />
-        </div>
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", color: "#4a5568", fontWeight: "bold", fontSize: "14px" }}>작성자 이름</label>
+              <input 
+                type="text" 
+                value={author} 
+                onChange={(e) => setAuthor(e.target.value)} 
+                placeholder="이름이나 닉네임을 적어주세요"
+                style={{ width: "100%", padding: "14px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "15px", boxSizing: "border-box" }} 
+              />
+            </div>
 
-        <button type="submit" style={{ padding: "10px", backgroundColor: "#0070f3", color: "white", border: "none", cursor: "pointer" }}>
-          팀원 구인 글 등록하기
-        </button>
-      </form>
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", color: "#4a5568", fontWeight: "bold", fontSize: "14px" }}>구인 내용</label>
+              <textarea 
+                value={content} 
+                onChange={(e) => setContent(e.target.value)} 
+                placeholder="프로젝트 아이디어와 필요한 팀원의 역할을 자세히 적어주세요."
+                style={{ width: "100%", padding: "14px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "15px", height: "150px", boxSizing: "border-box", resize: "vertical" }} 
+              />
+            </div>
+
+            <button type="submit" style={{ marginTop: "10px", backgroundColor: "#2563eb", color: "white", padding: "16px", borderRadius: "8px", border: "none", fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>
+              팀원 구인 글 등록하기
+            </button>
+          </form>
+        </div>
+      </div>
     </main>
   );
 }

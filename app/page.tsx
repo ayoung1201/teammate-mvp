@@ -1,19 +1,20 @@
-// app/page.tsx
-import Link from "next/link"; // 페이지 이동을 도와주는 Next.js의 기본 도구입니다.
+import Link from "next/link";
 
 export default function Home() {
   return (
-    // 여백을 약간 주어 글씨가 벽에 붙지 않게 합니다.
-    <main style={{ padding: "20px" }}>
-      <h1>TeamMate에 오신 것을 환영합니다!</h1>
-      <p>창업 아이디어는 있지만 팀원이 없는 분들을 위한 매칭 서비스입니다.</p>
-      
-      {/* /list 주소로 이동하게 해주는 링크입니다. */}
-      <Link href="/list">
-        <button style={{ marginTop: "20px", padding: "10px", cursor: "pointer" }}>
-          팀원 구인 글 보러가기
-        </button>
-      </Link>
+    <main style={{ minHeight: "100vh", backgroundColor: "#f0f4f8", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <div style={{ backgroundColor: "white", padding: "50px", borderRadius: "16px", boxShadow: "0 10px 25px rgba(0,0,0,0.05)", textAlign: "center", maxWidth: "500px", width: "100%" }}>
+        <h1 style={{ color: "#1a202c", fontSize: "32px", margin: "0 0 15px 0", fontWeight: "800", letterSpacing: "-1px" }}>TeamMate</h1>
+        <p style={{ color: "#4a5568", fontSize: "16px", lineHeight: "1.6", marginBottom: "35px", wordBreak: "keep-all" }}>
+          창업 아이디어는 있지만 마음이 맞는 팀원을 찾지 못한 분들을 위한 매칭 서비스입니다. 지금 바로 팀원을 찾아보세요.
+        </p>
+        
+        <Link href="/list" style={{ textDecoration: "none" }}>
+          <button style={{ backgroundColor: "#2563eb", color: "white", padding: "16px 32px", borderRadius: "8px", border: "none", fontSize: "16px", fontWeight: "bold", cursor: "pointer", width: "100%", boxShadow: "0 4px 6px rgba(37, 99, 235, 0.2)" }}>
+            팀원 구인 글 보러가기
+          </button>
+        </Link>
+      </div>
     </main>
   );
 }
