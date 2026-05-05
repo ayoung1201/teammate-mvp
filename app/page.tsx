@@ -1,15 +1,19 @@
 // app/page.tsx
+import Link from "next/link"; // 페이지 이동을 도와주는 Next.js의 기본 도구입니다.
 
-// 사용자가 인터넷 주소로 처음 접속했을 때 보이는 첫 화면(랜딩 페이지)입니다.
 export default function Home() {
   return (
-    // main 태그는 이 페이지의 가장 핵심이 되는 내용을 감싸는 역할을 합니다.
-    <main>
-      {/* h1 태그는 페이지의 가장 큰 제목을 나타냅니다. */}
-      <h1>TeamMate 준비 중입니다</h1>
+    // 여백을 약간 주어 글씨가 벽에 붙지 않게 합니다.
+    <main style={{ padding: "20px" }}>
+      <h1>TeamMate에 오신 것을 환영합니다!</h1>
+      <p>창업 아이디어는 있지만 팀원이 없는 분들을 위한 매칭 서비스입니다.</p>
       
-      {/* p 태그는 일반적인 텍스트(단락)를 나타냅니다. */}
-      <p>창업 팀원 매칭 서비스 MVP</p>
+      {/* /list 주소로 이동하게 해주는 링크입니다. */}
+      <Link href="/list">
+        <button style={{ marginTop: "20px", padding: "10px", cursor: "pointer" }}>
+          팀원 구인 글 보러가기
+        </button>
+      </Link>
     </main>
   );
 }
